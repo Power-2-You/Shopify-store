@@ -27,6 +27,8 @@
     >
       {%- if limit == blank or cart.item_count < limit %}
         {{- cart.item_count -}}
+      {%- else -%}
+        {{- limit | minus: 1 -}}+
       {%- endif -%}
     </span>
   </span>
