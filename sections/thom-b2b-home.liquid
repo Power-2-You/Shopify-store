@@ -1,0 +1,219 @@
+{%- comment -%} THE HOUSE OF MOUTH B2B home. Self-contained storefront layout. Reads live collections and products. No external assets. {%- endcomment -%}
+{%- liquid
+  assign cats = 'teeth-whitening,toothpaste,toothbrushes,power-toothbrushes,interdental-brushes,mouthwash-rinse,dry-mouth-care,kids-oral-care,floss-picks,sensitivity-remineralisation,braces-orthodontics,denture-appliance-care' | split: ','
+  assign rail = section.settings.rail_collection
+  unless rail
+    assign rail = collections['shop-all']
+  endunless
+  assign feat = section.settings.feature_image
+  assign feat_fallback = collections['teeth-whitening'].products.first.featured_image
+-%}
+<div class="thb">
+
+  <div class="thb-util">
+    <span>Free shipping over $99</span>
+    <span class="thb-sep"></span>
+    <span>Dispatched from the Gold Coast</span>
+    <span class="thb-sep"></span>
+    <a href="/account">Trade account login</a>
+  </div>
+
+  <section class="thb-hero">
+    <div class="thb-hero__txt">
+      <p class="thb-eyebrow">Trade / Wholesale</p>
+      <h1 class="thb-h1">{{ section.settings.hero_heading | escape }}</h1>
+      <p class="thb-sub">{{ section.settings.hero_sub | escape }}</p>
+      <div class="thb-cta">
+        <a class="thb-btn sol" href="/collections/shop-all">Shop all</a>
+        <a class="thb-btn" href="/account">Quick reorder</a>
+      </div>
+    </div>
+    <div class="thb-hero__img">
+      {%- if section.settings.hero_image -%}
+        {{ section.settings.hero_image | image_url: width: 1000 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '600, 800, 1000, 1400', sizes: '(max-width: 900px) 100vw, 560px', alt: section.settings.hero_heading }}
+      {%- endif -%}
+    </div>
+  </section>
+
+  <section class="thb-vp">
+    <div class="thb-vp__i">
+      <svg class="thb-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4-3 6.6-7 8-4-1.4-7-4-7-8V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
+      <div><span class="thb-vh">Professional brands</span><span class="thb-vt">The ranges practices rely on</span></div>
+    </div>
+    <div class="thb-vp__i">
+      <svg class="thb-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h11v9H3z"/><path d="M14 9h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg>
+      <div><span class="thb-vh">Fast dispatch</span><span class="thb-vt">Sent from the Gold Coast</span></div>
+    </div>
+    <div class="thb-vp__i">
+      <svg class="thb-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 1-9 9 9 9 0 0 1-7-3.3"/><path d="M3 12a9 9 0 0 1 9-9 9 9 0 0 1 7 3.3"/><path d="M21 4v5h-5"/><path d="M3 20v-5h5"/></svg>
+      <div><span class="thb-vh">Easy reordering</span><span class="thb-vt">Reorder from your account</span></div>
+    </div>
+    <div class="thb-vp__i">
+      <svg class="thb-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5l8 4.5 8-4.5"/><path d="M12 12v9"/></svg>
+      <div><span class="thb-vh">Case-pack pricing</span><span class="thb-vt">Bulk and wholesale rates</span></div>
+    </div>
+  </section>
+
+  {%- capture cat_cards -%}
+    {%- for h in cats -%}
+      {%- assign c = collections[h] -%}
+      {%- if c != blank and c.products_count > 0 -%}
+        <a class="thb-card" href="{{ c.url }}">
+          <span class="thb-img">{%- if c.products.first.featured_image -%}{{ c.products.first.featured_image | image_url: width: 320 | image_tag: loading: 'lazy', widths: '160, 240, 320, 480, 640', sizes: '(max-width: 520px) 45vw, (max-width: 900px) 30vw, 180px', alt: c.title }}{%- endif -%}</span>
+          <span class="thb-ct">{{ c.title }}</span>
+          <span class="thb-cc">{{ c.products_count }} items</span>
+        </a>
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+  {%- assign cat_cards = cat_cards | strip -%}
+  {%- if cat_cards != blank -%}
+    <section class="thb-band">
+      <h2 class="thb-bh">Shop by category</h2>
+      <div class="thb-grid cat">{{ cat_cards }}</div>
+    </section>
+  {%- endif -%}
+
+  {%- if rail and rail.products.size > 0 -%}
+    <section class="thb-band">
+      <div class="thb-bhead">
+        <h2 class="thb-bh">{{ section.settings.rail_heading | escape }}</h2>
+        <a class="thb-see" href="{{ rail.url }}">View all</a>
+      </div>
+      <div class="thb-rail" role="list" aria-label="{{ section.settings.rail_heading | escape }}">
+        {%- for product in rail.products limit: 12 -%}
+          <a class="thb-pc" href="{{ product.url }}" role="listitem">
+            <span class="thb-pcimg">{%- if product.featured_image -%}{{ product.featured_image | image_url: width: 360 | image_tag: loading: 'lazy', widths: '190, 280, 360, 540, 720', sizes: '(max-width: 749px) 60vw, 190px', alt: product.title }}{%- endif -%}</span>
+            {%- if product.vendor != blank -%}<span class="thb-pcv">{{ product.vendor }}</span>{%- endif -%}
+            <span class="thb-pct">{{ product.title }}</span>
+            <span class="thb-pcp">{%- if product.price_varies -%}From {% endif -%}{{ product.price | money }}</span>
+          </a>
+        {%- endfor -%}
+      </div>
+    </section>
+  {%- endif -%}
+
+  <section class="thb-feat">
+    <div class="thb-feat__img">
+      {%- if feat -%}{{ feat | image_url: width: 1000 | image_tag: loading: 'lazy', widths: '500, 700, 1000, 1400', sizes: '(max-width: 900px) 100vw, 560px', alt: section.settings.feature_heading }}
+      {%- elsif feat_fallback -%}{{ feat_fallback | image_url: width: 1000 | image_tag: loading: 'lazy', widths: '500, 700, 1000, 1400', sizes: '(max-width: 900px) 100vw, 560px', alt: section.settings.feature_heading }}{%- endif -%}
+    </div>
+    <div class="thb-feat__txt">
+      <p class="thb-eyebrow">For practices</p>
+      <h2 class="thb-fh">{{ section.settings.feature_heading | escape }}</h2>
+      <p class="thb-sub">{{ section.settings.feature_text | escape }}</p>
+      <a class="thb-btn sol" href="{{ section.settings.feature_link_url | default: '/collections/shop-all' }}">{{ section.settings.feature_link_label | escape }}</a>
+    </div>
+  </section>
+
+  {%- capture brand_cards -%}
+    {%- for c in collections limit: 250 -%}
+      {%- assign pre = c.handle | slice: 0, 6 -%}
+      {%- if pre == 'brand-' and c.products_count > 0 -%}
+        <a class="thb-bcard" href="{{ c.url }}">
+          <span class="thb-logo">{{ c.title }}</span>
+          <span class="thb-cc">{{ c.products_count }} products</span>
+        </a>
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+  {%- assign brand_cards = brand_cards | strip -%}
+  {%- if brand_cards != blank -%}
+    <section class="thb-band">
+      <h2 class="thb-bh">Shop by brand</h2>
+      <div class="thb-grid brand">{{ brand_cards }}</div>
+    </section>
+  {%- endif -%}
+
+  <section class="thb-ctaband">
+    <div class="thb-ctaband__in">
+      <h2 class="thb-ch">{{ section.settings.cta_heading | escape }}</h2>
+      <p class="thb-csub">{{ section.settings.cta_text | escape }}</p>
+      <a class="thb-btn ghost" href="{{ section.settings.cta_button_url | default: '/account' }}">{{ section.settings.cta_button_label | escape }}</a>
+    </div>
+  </section>
+
+</div>
+
+{% stylesheet %}
+.thb{font-family:'Work Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;color:#37456E;max-width:1200px;margin:0 auto;padding:0 20px 48px}
+.thb a{text-decoration:none;color:inherit}
+.thb-eyebrow{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#9CCB3B;margin:0 0 8px}
+.thb-sub{font-size:15px;line-height:1.55;color:#5b6478;margin:0 0 18px}
+.thb-btn{display:inline-block;border:1.5px solid #37456E;color:#37456E;border-radius:999px;padding:11px 22px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.thb-btn.sol{background:#37456E;color:#fff}
+.thb-btn.ghost{background:transparent;border-color:#fff;color:#fff}
+.thb-btn:hover{opacity:.9}
+.thb-util{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;font-size:12px;letter-spacing:.03em;color:#5b6478;padding:10px 0;border-bottom:1px solid #E3E7F0}
+.thb-util a{color:#37456E;font-weight:600}
+.thb-sep{width:4px;height:4px;border-radius:50%;background:#c7cfdc}
+.thb-hero{display:grid;grid-template-columns:1.05fr .95fr;gap:28px;align-items:center;padding:40px 0}
+.thb-h1{font-size:38px;line-height:1.08;font-weight:800;color:#2c3650;margin:0 0 14px}
+.thb-cta{display:flex;gap:12px;flex-wrap:wrap}
+.thb-hero__img{height:340px;border-radius:16px;background:#F5F7FB;border:1px solid #E3E7F0;overflow:hidden}
+.thb-hero__img img{width:100%;height:100%;object-fit:cover}
+.thb-vp{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;padding:22px;background:#F5F7FB;border:1px solid #E3E7F0;border-radius:14px}
+.thb-vp__i{display:flex;align-items:center;gap:12px}
+.thb-ic{width:26px;height:26px;color:#37456E;flex:none}
+.thb-vh{display:block;font-size:13px;font-weight:700;color:#2c3650}
+.thb-vt{display:block;font-size:12px;color:#8a93a6}
+.thb-band{padding:34px 0}
+.thb-bhead{display:flex;align-items:baseline;justify-content:space-between}
+.thb-bh{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#37456E;margin:0 0 18px}
+.thb-see{font-size:12px;font-weight:600;color:#37456E;text-transform:uppercase;letter-spacing:.04em}
+.thb-grid{display:grid;gap:14px}
+.thb-grid.cat{grid-template-columns:repeat(6,1fr)}
+.thb-grid.brand{grid-template-columns:repeat(6,1fr)}
+.thb-card,.thb-bcard{display:flex;flex-direction:column;align-items:center;gap:6px;border:1px solid #E3E7F0;border-radius:12px;padding:12px;transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease}
+.thb-card:hover,.thb-bcard:hover{transform:translateY(-3px);box-shadow:0 10px 22px -12px rgba(55,69,110,.45);border-color:#9CCB3B}
+.thb-img{width:100%;aspect-ratio:1;border-radius:8px;background:#F5F7FB;display:grid;place-items:center;overflow:hidden}
+.thb-img img{width:100%;height:100%;object-fit:cover}
+.thb-ct,.thb-logo{font-size:12px;font-weight:600;text-align:center;line-height:1.25;margin-top:4px}
+.thb-logo{background:#F5F7FB;border:1px solid #E3E7F0;border-radius:8px;padding:18px 8px;width:100%}
+.thb-cc{font-size:10.5px;color:#8a93a6}
+.thb-rail{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(190px,1fr);gap:14px;overflow-x:auto;padding-bottom:8px;scroll-snap-type:x mandatory}
+.thb-pc{scroll-snap-align:start;border:1px solid #E3E7F0;border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:4px;transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease}
+.thb-pc:hover{transform:translateY(-3px);box-shadow:0 10px 22px -12px rgba(55,69,110,.45);border-color:#9CCB3B}
+.thb-pcimg{width:100%;aspect-ratio:1;border-radius:8px;background:#F5F7FB;display:grid;place-items:center;overflow:hidden;margin-bottom:6px}
+.thb-pcimg img{width:100%;height:100%;object-fit:cover}
+.thb-pcv{font-size:10px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:#9CCB3B}
+.thb-pct{font-size:12px;font-weight:600;color:#2c3650;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.thb-pcp{font-size:13px;font-weight:700;color:#37456E;margin-top:auto}
+.thb-feat{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center;padding:34px 0}
+.thb-feat__img{aspect-ratio:4/3;border-radius:16px;background:#F5F7FB;border:1px solid #E3E7F0;overflow:hidden}
+.thb-feat__img img{width:100%;height:100%;object-fit:cover}
+.thb-fh{font-size:26px;line-height:1.15;font-weight:800;color:#2c3650;margin:0 0 12px}
+.thb-ctaband{margin-top:14px;background:#37456E;border-radius:18px;padding:48px 24px;text-align:center}
+.thb-ctaband__in{max-width:560px;margin:0 auto}
+.thb-ch{font-size:26px;font-weight:800;color:#fff;margin:0 0 10px}
+.thb-csub{font-size:15px;line-height:1.55;color:#cdd5e6;margin:0 0 22px}
+@media (max-width:900px){.thb-hero{grid-template-columns:1fr}.thb-hero__img{height:200px}.thb-h1{font-size:30px}.thb-vp{grid-template-columns:repeat(2,1fr)}.thb-grid.cat,.thb-grid.brand{grid-template-columns:repeat(3,1fr)}.thb-feat{grid-template-columns:1fr}}
+@media (max-width:520px){.thb-vp{grid-template-columns:1fr}.thb-grid.cat,.thb-grid.brand{grid-template-columns:repeat(2,1fr)}}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "B2B Home",
+  "settings": [
+    { "type": "header", "content": "Hero" },
+    { "type": "text", "id": "hero_heading", "label": "Hero heading", "default": "Professional oral care, wholesale." },
+    { "type": "text", "id": "hero_sub", "label": "Hero subtext", "default": "Reorder your essentials, explore professional brands, and shop the full range in one place." },
+    { "type": "image_picker", "id": "hero_image", "label": "Hero image (real photo)" },
+    { "type": "header", "content": "Product rail" },
+    { "type": "text", "id": "rail_heading", "label": "Rail heading", "default": "Popular in wholesale" },
+    { "type": "collection", "id": "rail_collection", "label": "Rail collection (defaults to Shop All)" },
+    { "type": "header", "content": "Feature band" },
+    { "type": "image_picker", "id": "feature_image", "label": "Feature image (real photo)" },
+    { "type": "text", "id": "feature_heading", "label": "Feature heading", "default": "Built for professional practices" },
+    { "type": "textarea", "id": "feature_text", "label": "Feature text", "default": "Stock the brands your patients already know, with case-pack pricing and quick reordering from your account." },
+    { "type": "text", "id": "feature_link_label", "label": "Feature button label", "default": "Explore the range" },
+    { "type": "url", "id": "feature_link_url", "label": "Feature button link" },
+    { "type": "header", "content": "Account CTA" },
+    { "type": "text", "id": "cta_heading", "label": "CTA heading", "default": "Open a wholesale account" },
+    { "type": "textarea", "id": "cta_text", "label": "CTA text", "default": "Apply for trade pricing and order the professional range direct from the Gold Coast." },
+    { "type": "text", "id": "cta_button_label", "label": "CTA button label", "default": "Get started" },
+    { "type": "url", "id": "cta_button_url", "label": "CTA button link" }
+  ],
+  "presets": [{ "name": "B2B Home" }]
+}
+{% endschema %}

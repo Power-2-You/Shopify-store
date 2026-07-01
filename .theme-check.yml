@@ -1,0 +1,13 @@
+# Theme Check configuration
+# https://shopify.dev/docs/storefronts/themes/tools/theme-check
+#
+# Run locally with the Shopify CLI:
+#   shopify theme check
+extends: theme-check:recommended
+
+# The theme ships with third-party app snippets (BSS B2B/Login, Locksmith)
+# whose vendored files we don't control. Keep linting focused on our own code.
+ignore:
+  - snippets/bss-*.liquid
+  - snippets/locksmith*.liquid
+  - assets/bss-*

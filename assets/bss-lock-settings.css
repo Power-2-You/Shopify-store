@@ -1,0 +1,9 @@
+.product__info-wrapper:has(.bss-lock-element) .quick-add__button{ cursor: not-allowed !important; opacity: .5 !important; pointer-events: none !important; }.product__info-wrapper:has(.bss-lock-element) [id*='ProductSubmitButton']{ cursor: not-allowed !important; opacity: .5 !important; pointer-events: none !important; }.product-grid__item:has(.bss-lock-element) form[id*="BuyButtons-ProductForm-"]{ cursor: not-allowed !important; opacity: .5 !important; pointer-events: none !important; }.product-grid__item:has(.bss-lock-element) button.quick-add__button{ cursor: not-allowed !important; opacity: .5 !important; pointer-events: none !important; }.product-grid__item:has(.bss-lock-element) quantity-selector-wrapper{ cursor: not-allowed !important; opacity: .5 !important; pointer-events: none !important; }[id*='ProductInformation']:has(.bss-lock-element) .quantity-selector{ cursor: not-allowed !important; opacity: .5 !important; pointer-events: none !important; }[id*='ProductInformation']:has(.bss-lock-element) [id*='BuyButtons-ProductSubmitButton-']{ cursor: not-allowed !important; opacity: .5 !important; pointer-events: none !important; }[id*='ProductInformation']:has(.bss-lock-element) .shopify-payment-button{ cursor: not-allowed !important; opacity: .5 !important; pointer-events: none !important; }
+        .bss-hide-atc + * {
+            display: none !important;
+        }
+			.bss-lock-hidden { display: none; }
+			script#bss-behavior-script { display: none !important }
+		
+
+ 
