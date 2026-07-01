@@ -1,0 +1,117 @@
+{%- comment -%} THE HOUSE OF MOUTH — Case-Pack Pricing. Self-contained volume pricing tiers for trade buyers. No external assets. {%- endcomment -%}
+{%- liquid
+  assign eyebrow = section.settings.eyebrow
+  assign heading = section.settings.heading
+  assign has_tiers = false
+  for block in section.blocks
+    if block.type == 'tier'
+      assign has_tiers = true
+      break
+    endif
+  endfor
+-%}
+<div class="thom-vp" style="--thom-vp-navy:{{ section.settings.color_navy }};--thom-vp-heading:{{ section.settings.color_heading }};--thom-vp-accent:{{ section.settings.color_accent }};--thom-vp-surface:{{ section.settings.color_surface }};--thom-vp-pt:{{ section.settings.padding_top }}px;--thom-vp-pb:{{ section.settings.padding_bottom }}px;">
+  <div class="thom-vp__wrap">
+
+    {%- if heading != blank or eyebrow != blank or section.settings.intro != blank -%}
+      <div class="thom-vp__head">
+        {%- if eyebrow != blank -%}<p class="thom-vp__eyebrow">{{ eyebrow | escape }}</p>{%- endif -%}
+        {%- if heading != blank -%}<h2 class="thom-vp__h2">{{ heading | escape }}</h2>{%- endif -%}
+        {%- if section.settings.intro != blank -%}<div class="thom-vp__intro">{{ section.settings.intro }}</div>{%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if has_tiers -%}
+      <ul class="thom-vp__grid" role="list">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'tier' -%}
+            {%- if block.settings.qty_label == blank and block.settings.price_label == blank and block.settings.save_label == blank -%}
+              {%- continue -%}
+            {%- endif -%}
+            <li class="thom-vp__card{% if block.settings.highlight %} is-best{% endif %}" {{ block.shopify_attributes }}>
+              {%- if block.settings.highlight -%}<span class="thom-vp__ribbon">Best value</span>{%- endif -%}
+              {%- if block.settings.qty_label != blank -%}<p class="thom-vp__qty">{{ block.settings.qty_label | escape }}</p>{%- endif -%}
+              {%- if block.settings.price_label != blank -%}<p class="thom-vp__price">{{ block.settings.price_label | escape }}</p>{%- endif -%}
+              {%- if block.settings.save_label != blank -%}<span class="thom-vp__save">{{ block.settings.save_label | escape }}</span>{%- endif -%}
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+
+      {%- if section.settings.note != blank -%}
+        <p class="thom-vp__note">{{ section.settings.note | escape }}</p>
+      {%- endif -%}
+    {%- endif -%}
+
+  </div>
+</div>
+
+{% stylesheet %}
+.thom-vp{font-family:'Work Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;color:#37456E;padding-top:var(--thom-vp-pt,56px);padding-bottom:var(--thom-vp-pb,56px)}
+.thom-vp__wrap{max-width:1200px;margin:0 auto;padding:0 20px}
+.thom-vp__head{max-width:640px;margin:0 0 28px}
+.thom-vp__eyebrow{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--thom-vp-accent,#9CCB3B);margin:0 0 8px}
+.thom-vp__h2{font-size:30px;line-height:1.12;font-weight:800;color:var(--thom-vp-heading,#2c3650);margin:0 0 12px}
+.thom-vp__intro{font-size:15px;line-height:1.6;color:#5b6478}
+.thom-vp__intro p{margin:0 0 8px}
+.thom-vp__intro p:last-child{margin-bottom:0}
+.thom-vp__intro a{color:var(--thom-vp-navy,#37456E);font-weight:600}
+.thom-vp__grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.thom-vp__card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:8px;background:var(--thom-vp-surface,#F5F7FB);border:1px solid #E3E7F0;border-radius:14px;padding:22px 20px;transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease}
+.thom-vp__card:hover{transform:translateY(-3px);box-shadow:0 12px 26px -14px rgba(55,69,110,.45);border-color:var(--thom-vp-accent,#9CCB3B)}
+.thom-vp__card.is-best{border:2px solid var(--thom-vp-accent,#9CCB3B);background:#fff;box-shadow:0 12px 26px -14px rgba(55,69,110,.35);padding-top:28px}
+.thom-vp__ribbon{position:absolute;top:-10px;left:20px;background:var(--thom-vp-accent,#9CCB3B);color:#2c3650;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:5px 10px;border-radius:999px;line-height:1}
+.thom-vp__qty{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#6B7793;margin:0}
+.thom-vp__price{font-size:26px;line-height:1.05;font-weight:800;color:var(--thom-vp-heading,#2c3650);margin:0}
+.thom-vp__save{display:inline-block;background:var(--thom-vp-accent,#9CCB3B);color:#2c3650;font-size:11px;font-weight:700;letter-spacing:.04em;padding:5px 12px;border-radius:999px;line-height:1;margin-top:auto}
+.thom-vp__note{font-size:12px;line-height:1.5;color:#8a93a6;margin:20px 0 0}
+@media (max-width:900px){.thom-vp__grid{grid-template-columns:repeat(2,1fr)}.thom-vp__h2{font-size:26px}}
+@media (max-width:749px){.thom-vp__grid{grid-template-columns:1fr}}
+.thom-vp a:focus-visible,.thom-vp__card:focus-visible{outline:2px solid var(--thom-vp-navy,#37456E);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.thom-vp__card{transition:none}.thom-vp__card:hover{transform:none}}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Case-Pack Pricing",
+  "settings": [
+    { "type": "header", "content": "Content" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Wholesale pricing" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Buy more, pay less" },
+    { "type": "richtext", "id": "intro", "label": "Intro text (optional)", "default": "<p>Approved trade accounts unlock case-pack pricing across the professional range. The more you order, the lower your per-unit cost.</p>" },
+    { "type": "text", "id": "note", "label": "Footnote (optional)", "default": "Prices shown ex GST for approved trade accounts." },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "color_navy", "label": "Primary (navy)", "default": "#37456E" },
+    { "type": "color", "id": "color_heading", "label": "Heading", "default": "#2c3650" },
+    { "type": "color", "id": "color_accent", "label": "Accent / highlight", "default": "#9CCB3B" },
+    { "type": "color", "id": "color_surface", "label": "Card surface", "default": "#F5F7FB" },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Padding top", "min": 0, "max": 100, "step": 2, "unit": "px", "default": 56 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding bottom", "min": 0, "max": 100, "step": 2, "unit": "px", "default": 56 }
+  ],
+  "blocks": [
+    {
+      "type": "tier",
+      "name": "Pricing tier",
+      "settings": [
+        { "type": "text", "id": "qty_label", "label": "Quantity label", "default": "1–4 units" },
+        { "type": "text", "id": "price_label", "label": "Price label", "default": "$12.50 ea" },
+        { "type": "text", "id": "save_label", "label": "Saving label (optional)", "default": "" },
+        { "type": "checkbox", "id": "highlight", "label": "Mark as best value", "default": false }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "Case-Pack Pricing",
+      "blocks": [
+        { "type": "tier", "settings": { "qty_label": "1–4 units", "price_label": "$12.50 ea", "save_label": "", "highlight": false } },
+        { "type": "tier", "settings": { "qty_label": "5–11 units", "price_label": "$11.25 ea", "save_label": "Save 10%", "highlight": false } },
+        { "type": "tier", "settings": { "qty_label": "Case of 12", "price_label": "$9.99 ea", "save_label": "Save 20%", "highlight": true } },
+        { "type": "tier", "settings": { "qty_label": "48+ (4 cases)", "price_label": "$8.75 ea", "save_label": "Save 30%", "highlight": false } }
+      ]
+    }
+  ]
+}
+{% endschema %}

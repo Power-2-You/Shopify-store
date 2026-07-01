@@ -1,0 +1,143 @@
+{%- comment -%} THE HOUSE OF MOUTH B2B trust bar. Self-contained. No external assets. Inline SVG icons only. {%- endcomment -%}
+{%- liquid
+  assign has_items = false
+  for block in section.blocks
+    if block.settings.heading != blank or block.settings.subtext != blank
+      assign has_items = true
+      break
+    endif
+  endfor
+-%}
+{%- if has_items -%}
+<div class="thtb" style="--thtb-pt:{{ section.settings.padding_top }}px;--thtb-pb:{{ section.settings.padding_bottom }}px;--thtb-icon:{{ section.settings.icon_color }};--thtb-heading:{{ section.settings.heading_color }};--thtb-subtext:{{ section.settings.subtext_color }};">
+  {%- if section.settings.heading != blank -%}
+    <p class="thtb-eyebrow">{{ section.settings.heading | escape }}</p>
+    <h2 class="thtb-visually-hidden">{{ section.settings.heading | escape }}</h2>
+  {%- endif -%}
+  <ul class="thtb-row{% if section.settings.surface %} is-surface{% endif %}{% if section.settings.dividers %} has-dividers{% endif %}" role="list">
+    {%- for block in section.blocks -%}
+      {%- if block.settings.heading != blank or block.settings.subtext != blank -%}
+        <li class="thtb-item" {{ block.shopify_attributes }}>
+          <span class="thtb-ic" aria-hidden="true">
+            {%- case block.settings.icon -%}
+              {%- when 'truck' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 6h11v9H3z"/><path d="M14 9h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg>
+              {%- when 'shield' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3l7 3v6c0 4-3 6.6-7 8-4-1.4-7-4-7-8V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
+              {%- when 'refresh' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12a9 9 0 0 1-9 9 9 9 0 0 1-7-3.3"/><path d="M3 12a9 9 0 0 1 9-9 9 9 0 0 1 7 3.3"/><path d="M21 4v5h-5"/><path d="M3 20v-5h5"/></svg>
+              {%- when 'box' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5l8 4.5 8-4.5"/><path d="M12 12v9"/></svg>
+              {%- when 'clock' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
+              {%- when 'badge' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="9" r="6"/><path d="M9 13.5L7.5 21l4.5-2.5L16.5 21 15 13.5"/><path d="M9.5 9l1.7 1.7L14.5 7.5"/></svg>
+              {%- when 'headset' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 13v-1a8 8 0 0 1 16 0v1"/><path d="M4 13h2.5a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"/><path d="M20 13h-2.5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1H19a1 1 0 0 0 1-1z"/><path d="M20 17v1a3 3 0 0 1-3 3h-3"/></svg>
+              {%- when 'lock' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><path d="M12 14v3"/></svg>
+              {%- when 'star' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.9L12 16.9 6.8 19.2l1-5.9L3.5 9.2l5.9-.9z"/></svg>
+              {%- when 'tooth' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 4c-2-1.6-5-1.6-6.5 0-1.8 2-1 6.4-.2 9.6.4 1.7.4 4.4 1.7 5.9.9 1 1.9.2 2.2-1 .5-1.7.6-3.9 1.8-3.9s1.3 2.2 1.8 3.9c.3 1.2 1.3 2 2.2 1 1.3-1.5 1.3-4.2 1.7-5.9.8-3.2 1.6-7.6-.2-9.6C17 2.4 14 2.4 12 4z"/></svg>
+              {%- when 'leaf' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 20c0-8 6-14 16-14 0 10-6 15-14 14"/><path d="M5 19c4-5 8-7 12-8"/></svg>
+              {%- when 'heart' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 20s-7-4.4-9.3-8.6C1.2 8.5 2.6 5 6 5c2 0 3.2 1.2 4 2.4C10.8 6.2 12 5 14 5c3.4 0 4.8 3.5 3.3 6.4C19 15.6 12 20 12 20z"/></svg>
+              {%- else -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3l7 3v6c0 4-3 6.6-7 8-4-1.4-7-4-7-8V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
+            {%- endcase -%}
+          </span>
+          <span class="thtb-txt">
+            {%- if block.settings.heading != blank -%}<span class="thtb-h">{{ block.settings.heading | escape }}</span>{%- endif -%}
+            {%- if block.settings.subtext != blank -%}<span class="thtb-s">{{ block.settings.subtext | escape }}</span>{%- endif -%}
+          </span>
+        </li>
+      {%- endif -%}
+    {%- endfor -%}
+  </ul>
+</div>
+{%- endif -%}
+
+{% stylesheet %}
+.thtb{font-family:'Work Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;color:#37456E;max-width:1200px;margin:0 auto;padding:var(--thtb-pt,20px) 20px var(--thtb-pb,20px)}
+.thtb-eyebrow{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#9CCB3B;margin:0 0 14px;text-align:center}
+.thtb-visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.thtb-row{list-style:none;margin:0;padding:0;display:flex;align-items:stretch;justify-content:space-evenly;flex-wrap:wrap;gap:8px}
+.thtb-row.is-surface{background:#F5F7FB;border:1px solid #E3E7F0;border-radius:16px;padding:22px 18px}
+.thtb-item{display:flex;align-items:center;gap:12px;flex:1 1 200px;min-width:180px;padding:6px 14px;position:relative}
+.thtb-row.has-dividers .thtb-item+.thtb-item::before{content:"";position:absolute;left:0;top:14%;bottom:14%;width:1px;background:#E3E7F0}
+.thtb-ic{display:grid;place-items:center;flex:none;color:var(--thtb-icon,#37456E)}
+.thtb-ic svg{width:28px;height:28px}
+.thtb-txt{display:flex;flex-direction:column;gap:2px;min-width:0}
+.thtb-h{font-size:14px;font-weight:700;line-height:1.25;color:var(--thtb-heading,#2c3650)}
+.thtb-s{font-size:12.5px;line-height:1.35;color:var(--thtb-subtext,#8a93a6)}
+@media (max-width:749px){
+  .thtb-row{flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;scroll-snap-type:x mandatory}
+  .thtb-row::-webkit-scrollbar{display:none}
+  .thtb-item{flex:0 0 auto;min-width:0;width:min(72vw,260px);scroll-snap-align:start}
+  .thtb-row.has-dividers .thtb-item+.thtb-item::before{top:20%;bottom:20%}
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "B2B Trust Bar",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Eyebrow heading (optional)", "info": "Hidden if left blank.", "default": "Why buy from us" },
+    { "type": "header", "content": "Layout" },
+    { "type": "checkbox", "id": "surface", "label": "Show surface background card", "default": true },
+    { "type": "checkbox", "id": "dividers", "label": "Show vertical dividers between items", "default": true },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "icon_color", "label": "Icon color", "default": "#37456E" },
+    { "type": "color", "id": "heading_color", "label": "Item heading color", "default": "#2c3650" },
+    { "type": "color", "id": "subtext_color", "label": "Item subtext color", "default": "#8a93a6" },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Padding top", "min": 0, "max": 100, "step": 2, "unit": "px", "default": 24 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding bottom", "min": 0, "max": 100, "step": 2, "unit": "px", "default": 24 }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Trust item",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "default": "truck",
+          "options": [
+            { "value": "truck", "label": "Truck" },
+            { "value": "shield", "label": "Shield" },
+            { "value": "refresh", "label": "Refresh" },
+            { "value": "box", "label": "Box" },
+            { "value": "clock", "label": "Clock" },
+            { "value": "badge", "label": "Badge" },
+            { "value": "headset", "label": "Headset" },
+            { "value": "lock", "label": "Lock" },
+            { "value": "star", "label": "Star" },
+            { "value": "tooth", "label": "Tooth" },
+            { "value": "leaf", "label": "Leaf" },
+            { "value": "heart", "label": "Heart" }
+          ]
+        },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Free freight over $99" },
+        { "type": "text", "id": "subtext", "label": "Subtext", "default": "Australia-wide dispatch" }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "B2B Trust Bar",
+      "blocks": [
+        { "type": "item", "settings": { "icon": "truck", "heading": "Free freight over $99", "subtext": "Australia-wide dispatch" } },
+        { "type": "item", "settings": { "icon": "clock", "heading": "Fast dispatch", "subtext": "Sent from the Gold Coast" } },
+        { "type": "item", "settings": { "icon": "badge", "heading": "Trade pricing", "subtext": "Apply for a wholesale account" } },
+        { "type": "item", "settings": { "icon": "lock", "heading": "Secure checkout", "subtext": "All major cards & Shop Pay" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

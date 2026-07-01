@@ -10,22 +10,24 @@
 -%}
 <div class="thb">
 
-  <div class="thb-util">
-    <span>Free shipping over $99</span>
-    <span class="thb-sep"></span>
-    <span>Dispatched from the Gold Coast</span>
-    <span class="thb-sep"></span>
-    <a href="/account">Trade account login</a>
-  </div>
+  {%- if section.settings.show_util_bar -%}
+    <div class="thb-util">
+      {%- assign util_shown = 0 -%}
+      {%- if section.settings.util_text_1 != blank -%}<span>{{ section.settings.util_text_1 | escape }}</span>{%- assign util_shown = 1 -%}{%- endif -%}
+      {%- if section.settings.util_text_2 != blank -%}{% if util_shown == 1 %}<span class="thb-sep"></span>{% endif %}<span>{{ section.settings.util_text_2 | escape }}</span>{%- assign util_shown = 1 -%}{%- endif -%}
+      {%- if section.settings.util_text_3 != blank -%}{% if util_shown == 1 %}<span class="thb-sep"></span>{% endif %}<span>{{ section.settings.util_text_3 | escape }}</span>{%- assign util_shown = 1 -%}{%- endif -%}
+      {%- if section.settings.util_link_label != blank -%}{% if util_shown == 1 %}<span class="thb-sep"></span>{% endif %}<a href="{{ section.settings.util_link_url | default: '/account' }}">{{ section.settings.util_link_label | escape }}</a>{%- endif -%}
+    </div>
+  {%- endif -%}
 
   <section class="thb-hero">
     <div class="thb-hero__txt">
-      <p class="thb-eyebrow">Trade / Wholesale</p>
+      {%- if section.settings.hero_eyebrow != blank -%}<p class="thb-eyebrow">{{ section.settings.hero_eyebrow | escape }}</p>{%- endif -%}
       <h1 class="thb-h1">{{ section.settings.hero_heading | escape }}</h1>
       <p class="thb-sub">{{ section.settings.hero_sub | escape }}</p>
       <div class="thb-cta">
-        <a class="thb-btn sol" href="/collections/shop-all">Shop all</a>
-        <a class="thb-btn" href="/account">Quick reorder</a>
+        {%- if section.settings.hero_cta1_label != blank -%}<a class="thb-btn sol" href="{{ section.settings.hero_cta1_url | default: '/collections/shop-all' }}">{{ section.settings.hero_cta1_label | escape }}</a>{%- endif -%}
+        {%- if section.settings.hero_cta2_label != blank -%}<a class="thb-btn" href="{{ section.settings.hero_cta2_url | default: '/account' }}">{{ section.settings.hero_cta2_label | escape }}</a>{%- endif -%}
       </div>
     </div>
     <div class="thb-hero__img">
@@ -35,6 +37,7 @@
     </div>
   </section>
 
+  {%- if section.settings.show_value_props -%}
   <section class="thb-vp">
     <div class="thb-vp__i">
       <svg class="thb-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4-3 6.6-7 8-4-1.4-7-4-7-8V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
@@ -53,6 +56,7 @@
       <div><span class="thb-vh">Case-pack pricing</span><span class="thb-vt">Bulk and wholesale rates</span></div>
     </div>
   </section>
+  {%- endif -%}
 
   {%- capture cat_cards -%}
     {%- for h in cats -%}
@@ -93,6 +97,7 @@
     </section>
   {%- endif -%}
 
+  {%- if section.settings.show_feature -%}
   <section class="thb-feat">
     <div class="thb-feat__img">
       {%- if feat -%}{{ feat | image_url: width: 1000 | image_tag: loading: 'lazy', widths: '500, 700, 1000, 1400', sizes: '(max-width: 900px) 100vw, 560px', alt: section.settings.feature_heading }}
@@ -105,6 +110,7 @@
       <a class="thb-btn sol" href="{{ section.settings.feature_link_url | default: '/collections/shop-all' }}">{{ section.settings.feature_link_label | escape }}</a>
     </div>
   </section>
+  {%- endif -%}
 
   {%- capture brand_cards -%}
     {%- for c in collections limit: 250 -%}
@@ -125,6 +131,7 @@
     </section>
   {%- endif -%}
 
+  {%- if section.settings.show_cta -%}
   <section class="thb-ctaband">
     <div class="thb-ctaband__in">
       <h2 class="thb-ch">{{ section.settings.cta_heading | escape }}</h2>
@@ -132,6 +139,7 @@
       <a class="thb-btn ghost" href="{{ section.settings.cta_button_url | default: '/account' }}">{{ section.settings.cta_button_label | escape }}</a>
     </div>
   </section>
+  {%- endif -%}
 
 </div>
 
@@ -195,10 +203,22 @@
 {
   "name": "B2B Home",
   "settings": [
+    { "type": "header", "content": "Utility bar" },
+    { "type": "checkbox", "id": "show_util_bar", "label": "Show utility bar", "default": true },
+    { "type": "text", "id": "util_text_1", "label": "Utility text 1", "default": "Free shipping over $99" },
+    { "type": "text", "id": "util_text_2", "label": "Utility text 2", "default": "Dispatched from the Gold Coast" },
+    { "type": "text", "id": "util_text_3", "label": "Utility text 3" },
+    { "type": "text", "id": "util_link_label", "label": "Utility link label", "default": "Trade account login" },
+    { "type": "url", "id": "util_link_url", "label": "Utility link", "info": "Defaults to /account." },
     { "type": "header", "content": "Hero" },
+    { "type": "text", "id": "hero_eyebrow", "label": "Hero eyebrow", "default": "Trade / Wholesale" },
     { "type": "text", "id": "hero_heading", "label": "Hero heading", "default": "Professional oral care, wholesale." },
     { "type": "text", "id": "hero_sub", "label": "Hero subtext", "default": "Reorder your essentials, explore professional brands, and shop the full range in one place." },
     { "type": "image_picker", "id": "hero_image", "label": "Hero image (real photo)" },
+    { "type": "text", "id": "hero_cta1_label", "label": "Primary button label", "default": "Shop all" },
+    { "type": "url", "id": "hero_cta1_url", "label": "Primary button link", "info": "Defaults to /collections/shop-all." },
+    { "type": "text", "id": "hero_cta2_label", "label": "Secondary button label", "default": "Quick reorder" },
+    { "type": "url", "id": "hero_cta2_url", "label": "Secondary button link", "info": "Defaults to /account." },
     { "type": "header", "content": "Product rail" },
     { "type": "text", "id": "rail_heading", "label": "Rail heading", "default": "Popular in wholesale" },
     { "type": "collection", "id": "rail_collection", "label": "Rail collection (defaults to Shop All)" },
@@ -212,7 +232,11 @@
     { "type": "text", "id": "cta_heading", "label": "CTA heading", "default": "Open a wholesale account" },
     { "type": "textarea", "id": "cta_text", "label": "CTA text", "default": "Apply for trade pricing and order the professional range direct from the Gold Coast." },
     { "type": "text", "id": "cta_button_label", "label": "CTA button label", "default": "Get started" },
-    { "type": "url", "id": "cta_button_url", "label": "CTA button link" }
+    { "type": "url", "id": "cta_button_url", "label": "CTA button link" },
+    { "type": "header", "content": "Section visibility" },
+    { "type": "checkbox", "id": "show_value_props", "label": "Show value props row", "default": true },
+    { "type": "checkbox", "id": "show_feature", "label": "Show feature band", "default": true },
+    { "type": "checkbox", "id": "show_cta", "label": "Show account CTA band", "default": true }
   ],
   "presets": [{ "name": "B2B Home" }]
 }
