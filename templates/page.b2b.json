@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "b2bhome": {
+      "type": "thom-b2b-home",
+      "settings": {}
+    }
+  },
+  "order": ["b2bhome"]
+}

@@ -1,0 +1,175 @@
+{%- comment -%} THE HOUSE OF MOUTH B2B testimonials. Self-contained social-proof cards. No external assets. {%- endcomment -%}
+{%- liquid
+  assign has_blocks = false
+  for block in section.blocks
+    if block.type == 'quote'
+      assign has_blocks = true
+      break
+    endif
+  endfor
+-%}
+{%- if has_blocks -%}
+  <section class="thmt" style="--thmt-pt:{{ section.settings.padding_top }}px;--thmt-pb:{{ section.settings.padding_bottom }}px;--thmt-navy:{{ section.settings.color_primary }};--thmt-heading:{{ section.settings.color_heading }};--thmt-accent:{{ section.settings.color_accent }};--thmt-surface:{{ section.settings.color_surface }};--thmt-cols:{{ section.settings.columns }};">
+    <div class="thmt__wrap">
+      {%- if section.settings.eyebrow != blank or section.settings.heading != blank -%}
+        <div class="thmt__head">
+          {%- if section.settings.eyebrow != blank -%}
+            <p class="thmt__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+          {%- endif -%}
+          {%- if section.settings.heading != blank -%}
+            <h2 class="thmt__title">{{ section.settings.heading | escape }}</h2>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      <ul class="thmt__grid" role="list">
+        {%- for block in section.blocks -%}
+          {%- if block.type != 'quote' -%}{%- continue -%}{%- endif -%}
+          {%- if block.settings.quote == blank -%}{%- continue -%}{%- endif -%}
+          <li class="thmt__card" {{ block.shopify_attributes }}>
+            {%- if section.settings.show_ratings and block.settings.rating > 0 -%}
+              {%- assign rating = block.settings.rating -%}
+              <div class="thmt__stars" role="img" aria-label="Rated {{ rating }} out of 5">
+                {%- for i in (1..5) -%}
+                  {%- if i <= rating -%}
+                    <svg class="thmt__star is-on" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3.2l2.6 5.3 5.8.8-4.2 4.1 1 5.8L12 16.9 6.8 19.2l1-5.8L3.6 9.3l5.8-.8L12 3.2z"/></svg>
+                  {%- else -%}
+                    <svg class="thmt__star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3.2l2.6 5.3 5.8.8-4.2 4.1 1 5.8L12 16.9 6.8 19.2l1-5.8L3.6 9.3l5.8-.8L12 3.2z"/></svg>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+
+            <svg class="thmt__mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 7H6a3 3 0 0 0-3 3v4a3 3 0 0 0 3 3h1v-4H6a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1h4z"/><path d="M21 7h-4a3 3 0 0 0-3 3v4a3 3 0 0 0 3 3h1v-4h-1a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1h4z"/></svg>
+
+            <blockquote class="thmt__quote">{{ block.settings.quote | escape | newline_to_br }}</blockquote>
+
+            {%- if block.settings.author != blank or block.settings.role != blank or block.settings.image != blank -%}
+              <div class="thmt__by">
+                {%- if block.settings.image != blank -%}
+                  <span class="thmt__avatar">{{ block.settings.image | image_url: width: 96 | image_tag: loading: 'lazy', width: 48, height: 48, widths: '48, 96', sizes: '48px', alt: block.settings.author }}</span>
+                {%- endif -%}
+                {%- if block.settings.author != blank or block.settings.role != blank -%}
+                  <span class="thmt__meta">
+                    {%- if block.settings.author != blank -%}<span class="thmt__author">{{ block.settings.author | escape }}</span>{%- endif -%}
+                    {%- if block.settings.role != blank -%}<span class="thmt__role">{{ block.settings.role | escape }}</span>{%- endif -%}
+                  </span>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  </section>
+{%- endif -%}
+
+{% stylesheet %}
+.thmt{font-family:'Work Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;color:var(--thmt-navy,#37456E);padding-top:var(--thmt-pt,56px);padding-bottom:var(--thmt-pb,56px)}
+.thmt__wrap{max-width:1200px;margin:0 auto;padding:0 20px}
+.thmt__head{max-width:640px;margin:0 0 28px}
+.thmt__eyebrow{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--thmt-accent,#9CCB3B);margin:0 0 8px}
+.thmt__title{font-size:28px;line-height:1.15;font-weight:800;color:var(--thmt-heading,#2c3650);margin:0}
+.thmt__grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(var(--thmt-cols,3),1fr);gap:18px}
+.thmt__card{display:flex;flex-direction:column;gap:14px;background:#fff;border:1px solid #E3E7F0;border-radius:16px;padding:24px;transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease}
+.thmt__card:hover{transform:translateY(-3px);box-shadow:0 12px 26px -14px rgba(55,69,110,.45);border-color:var(--thmt-accent,#9CCB3B)}
+.thmt__stars{display:inline-flex;gap:3px;color:var(--thmt-accent,#9CCB3B)}
+.thmt__star{width:18px;height:18px;flex:none}
+.thmt__star:not(.is-on){color:#c7cfdc}
+.thmt__mark{width:30px;height:30px;color:var(--thmt-surface,#F5F7FB);color:var(--thmt-navy,#37456E);opacity:.18;flex:none}
+.thmt__quote{margin:0;font-size:15.5px;line-height:1.6;color:#5b6478;font-weight:500;quotes:none}
+.thmt__by{display:flex;align-items:center;gap:12px;margin-top:auto;padding-top:6px}
+.thmt__avatar{width:48px;height:48px;border-radius:50%;overflow:hidden;flex:none;background:var(--thmt-surface,#F5F7FB);border:1px solid #E3E7F0;display:block}
+.thmt__avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.thmt__meta{display:flex;flex-direction:column;gap:2px;min-width:0}
+.thmt__author{font-size:13.5px;font-weight:700;color:var(--thmt-heading,#2c3650)}
+.thmt__role{font-size:12px;color:#8a93a6}
+@media (max-width:749px){
+  .thmt__grid{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:82%;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px;margin:0 -20px;padding-left:20px;padding-right:20px;-webkit-overflow-scrolling:touch}
+  .thmt__card{scroll-snap-align:start}
+  .thmt__title{font-size:24px}
+}
+.thmt a:focus-visible,.thmt__card:focus-visible{outline:2px solid var(--thmt-navy,#37456E);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){
+  .thmt__card{transition:none}
+  .thmt__card:hover{transform:none}
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "B2B Testimonials",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Trusted by practices" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "What the trade says" },
+    {
+      "type": "select",
+      "id": "columns",
+      "label": "Columns (desktop)",
+      "options": [
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" }
+      ],
+      "default": "3"
+    },
+    { "type": "checkbox", "id": "show_ratings", "label": "Show star ratings", "default": true },
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "color_primary", "label": "Primary / navy", "default": "#37456E" },
+    { "type": "color", "id": "color_heading", "label": "Heading", "default": "#2c3650" },
+    { "type": "color", "id": "color_accent", "label": "Accent / lime", "default": "#9CCB3B" },
+    { "type": "color", "id": "color_surface", "label": "Surface", "default": "#F5F7FB" },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Padding top", "min": 0, "max": 100, "step": 2, "unit": "px", "default": 56 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding bottom", "min": 0, "max": 100, "step": 2, "unit": "px", "default": 56 }
+  ],
+  "blocks": [
+    {
+      "type": "quote",
+      "name": "Quote",
+      "settings": [
+        { "type": "textarea", "id": "quote", "label": "Quote" },
+        { "type": "text", "id": "author", "label": "Author" },
+        { "type": "text", "id": "role", "label": "Role (practice / city)" },
+        { "type": "range", "id": "rating", "label": "Rating", "min": 0, "max": 5, "step": 1, "default": 5 },
+        { "type": "image_picker", "id": "image", "label": "Avatar (optional)" }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "B2B Testimonials",
+      "blocks": [
+        {
+          "type": "quote",
+          "settings": {
+            "quote": "Reordering our whitening and interdental stock takes minutes now. Dispatch from the Gold Coast means we usually have it chairside within a couple of days.",
+            "author": "Dr. Priya Nadesan",
+            "role": "Broadbeach Dental Care, QLD",
+            "rating": 5
+          }
+        },
+        {
+          "type": "quote",
+          "settings": {
+            "quote": "The case-pack pricing has genuinely improved our margins on retail products. Our patients trust the professional brands, and we can finally stock them properly.",
+            "author": "Megan Ashworth",
+            "role": "Practice Manager, Southport Smiles",
+            "rating": 5
+          }
+        },
+        {
+          "type": "quote",
+          "settings": {
+            "quote": "Consistent supply and a straightforward trade account. We switched our whole hygiene range across and haven't looked back.",
+            "author": "Dr. James Whitfield",
+            "role": "Coolangatta Family Dental, QLD",
+            "rating": 4
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
